@@ -7,6 +7,7 @@
   <title>TP1 - Weik - Stigliano Velichco</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="libraries/p5.min.js"></script>
+  <script src="libraries/p5.sound.min.js"></script>
 </head>
 
 <body>
@@ -14,11 +15,17 @@
     <h1>Roger Weik - Serie de bandas y gotas</h1>
     <p>Presiona <strong>ESPACIO</strong> para generar una nueva obra |
       Presiona <strong>S</strong> para guardar imagen</p>
+    <p>
+      Hacé clic para activar el micrófono |
+      Voz continua = bandas |
+      Golpes o palmas = gotas |
+      S = guardar
+    </p>
   </main>
 
-    <!-- Cargar las clases en orden (primero las que no dependen de otras) -->
+  <!-- Cargar las clases en orden (primero las que no dependen de otras) -->
   <script src="clases/Paleta.js"></script>
-  <script src="clases/GotaPequena.js"></script>  <!-- Nueva -->
+  <script src="clases/gotapequena.js"></script> <!-- Nueva -->
   <script src="clases/Gota.js"></script>
   <script src="clases/Banda.js"></script>
   <script src="clases/Composicion.js"></script>
