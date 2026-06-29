@@ -188,31 +188,7 @@ function dibujarTramoFranja(x1, x2, y) {
     }
 }
 
-function dibujarBarraCantidadFranjas() {
-    push();
 
-    noStroke();
-
-    fill(255, 35);
-    rect(width + 20, 80, 18, 260, 9);
-
-    fill(255, 210);
-    let h = map(cargaCantidadFranjas, 0, 1, 0, 260);
-    rect(width + 20, 340 - h, 18, h, 9);
-
-    fill(255);
-    textSize(13);
-    textAlign(LEFT, TOP);
-
-    text(
-        "Franjas: " + cantidadFranjasElegida +
-        "\n\nMantené presionado\npara elegir cantidad.\n\nSoltá para confirmar.",
-        width + 50,
-        80
-    );
-
-    pop();
-}
 
 function dibujarMensajeInicioFranjas() {
     push();
@@ -268,14 +244,18 @@ function actualizarPanelFranjasHTML() {
     barraFranjasHTML.style("width", porcentaje + "%");
 
     if (modoFranjas === "elegirCantidad") {
-        ayudaFranjasHTML.html("Mantené presionado para cargar cantidad. Soltá para confirmar.");
+        ayudaFranjasHTML.html("Cargar cantidad con sonido. Confirmar con silencio.");
     }
 
     if (modoFranjas === "esperarInicio") {
-        ayudaFranjasHTML.html("Cantidad confirmada. Hacé click para empezar a dibujar.");
+        ayudaFranjasHTML.html("Cantidad confirmada. Dibuja con tu voz.");
     }
 
     if (modoFranjas === "pintarFranjas") {
         ayudaFranjasHTML.html("Dibujando franja " + (franjaActual + 1) + " de " + cantidadFranjasElegida);
     }
+}
+
+function franjasTerminadas() {
+    return franjaActual >= guiaFranjas.length;
 }

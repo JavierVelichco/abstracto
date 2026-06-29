@@ -52,7 +52,7 @@ let sonidoLargo = false;
 let marcaUltimoPitch = 0;
 let timeoutSinPitch = 300;
 
-let umbralGolpe = 0.40;
+let umbralGolpe = 0.50;
 
 
 //=================================

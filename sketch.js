@@ -15,6 +15,10 @@ let intervaloTrazo = 350;
 let tiempoInicioPaleta = 0;
 let duracionConfirmarPaleta = 1200;
 let estadoCambiadoPorVoz = false;
+let guardadoPorVoz = false;
+let pausadoDespuesDeGuardar = false;
+let tiempoFinPausa = 0;
+let duracionPausaGuardado = 3000;
 
 function setup() {
   let canvas = createCanvas(700, 900);
@@ -40,9 +44,24 @@ function draw() {
   actualizarPanel();
   actualizarVoz();
   actualizarVumetro();
+  if (pausadoDespuesDeGuardar) {
+  mostrarMensajeReinicio();
+
+  if (millis() > tiempoFinPausa) {
+    pausadoDespuesDeGuardar = false;
+    limpiarTodo();
+  }
+
+  return;
+}
 
   elegirPaletaConVoz();
+
+  if (estado !== FRANJAS) {
   cambiarEstadoConVoz();
+}
+
+guardarConVoz();
 
   if (
     haySonido &&
@@ -65,6 +84,8 @@ function draw() {
     dibujandoTramoFranja = false;
     capaAplicada = true;
   }
+
+
 }
 
 function keyPressed() {
@@ -94,7 +115,16 @@ function keyPressed() {
 
   // ENTER: pasa al siguiente estado.
   // Si no pintaste nada todavía, aplica una capa mínima antes de avanzar.
-  if (keyCode === ENTER) avanzarEstado();
+  if (keyCode === ENTER) {
+  if (estado === INICIO) {
+    estado = FONDO;
+    aplicarFondo();
+    capaAplicada = true;
+    return;
+  }
+
+  avanzarEstado();
+}
 
   if ((key === "s" || key === "S") && estado === CERRADA) {
     saveCanvas("obra_por_voz", "png");
@@ -116,7 +146,7 @@ function aplicarCapaActual() {
     return;
   }
 
-  if (estado === VELADURA) {
+  if (estado === VELADURA1 || estado === VELADURA2) {
     aplicarVeladura();
     capaAplicada = true;
     return;
@@ -125,7 +155,6 @@ function aplicarCapaActual() {
   if (estado === MOTAS) {
     aplicarMotas();
     capaAplicada = true;
-
     return;
   }
 
@@ -173,11 +202,16 @@ function avanzarEstado() {
     return;
   }
 
-  if (estado === FRANJAS) {
+if (estado === FRANJAS) {
+
+    if (!franjasTerminadas()) {
+        return;
+    }
+
     estado = CERRADA;
     capaAplicada = true;
     return;
-  }
+}
 }
 
 function limpiarTodo() {
@@ -260,16 +294,19 @@ function aplicarFondo() {
 function aplicarVeladura() {
   switch (paleta) {
     case 0:
-      generarVeladurasSuaves();
+      generarVeladurasMarrones();
       break;
+
     case 1:
-      generarVeladurasSuaves();
+      generarVeladurasAmarillas();
       break;
+
     case 2:
       generarVeladurasVerdes();
       break;
+
     case 3:
-      generarVeladurasSuaves();
+      generarVeladurasCobalto();
       break;
   }
 }
@@ -444,6 +481,10 @@ function elegirPaletaConVoz() {
 function cambiarEstadoConVoz() {
   if (estado === INICIO || estado === CERRADA) return;
 
+    if (estado === FRANJAS && !franjasTerminadas()) {
+    return;
+}
+
   if (sonidoLargo && capaAplicada && !estadoCambiadoPorVoz) {
     avanzarEstado();
     estadoCambiadoPorVoz = true;
@@ -452,4 +493,37 @@ function cambiarEstadoConVoz() {
   if (!haySonido) {
     estadoCambiadoPorVoz = false;
   }
+
+}
+
+function guardarConVoz() {
+  if (estado !== CERRADA) return;
+
+  if (sonidoLargo && !guardadoPorVoz) {
+    saveCanvas("obra_por_voz", "png");
+
+    guardadoPorVoz = true;
+    pausadoDespuesDeGuardar = true;
+    tiempoFinPausa = millis() + duracionPausaGuardado;
+  }
+
+  if (!haySonido) {
+    guardadoPorVoz = false;
+  }
+}
+
+function mostrarMensajeReinicio() {
+  push();
+  fill(0, 180);
+  rect(0, 0, width, height);
+
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  text(
+    "Obra guardada\nReiniciando...",
+    width / 2,
+    height / 2
+  );
+  pop();
 }
