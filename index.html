@@ -2,35 +2,118 @@
 <html lang="es">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TP1 - Weik - Stigliano Velichco</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="libraries/p5.min.js"></script>
-  <script src="libraries/p5.sound.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintura por voz</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 
 <body>
-  <main>
-    <h1>Roger Weik - Serie de bandas y gotas</h1>
-    <p>Presiona <strong>ESPACIO</strong> para generar una nueva obra |
-      Presiona <strong>S</strong> para guardar imagen</p>
-    <p>
-      Hacé clic para activar el micrófono |
-      Voz continua = bandas |
-      Golpes o palmas = gotas |
-      S = guardar
-    </p>
-  </main>
+    <main class="contenedor">
 
-  <!-- Cargar las clases en orden (primero las que no dependen de otras) -->
-  <script src="clases/Paleta.js"></script>
-  <script src="clases/gotapequena.js"></script> <!-- Nueva -->
-  <script src="clases/Gota.js"></script>
-  <script src="clases/Banda.js"></script>
-  <script src="clases/Composicion.js"></script>
+        <section class="zona-obra" aria-label="Área de pintura">
+            <div id="marco">
+                <div id="canvas-container"></div>
+            </div>
+        </section>
 
-  <script src="sketch.js"></script>
+        <aside class="panel">
+            <h1>Pintura por voz</h1>
+
+            <div class="bloque estado-obra">
+                <p><strong>Estado:</strong> <span id="estadoTexto">INICIO</span></p>
+                <p><strong>Paleta:</strong> <span id="paletaTexto">Marrones</span></p>
+                <p><strong>Acción:</strong> <span id="accionTexto">Voz: elegir paleta | Sonido sostenido:
+                        comenzar</span></p>
+            </div>
+
+            <div class="bloque audio-box">
+                <button id="btnAudio" onclick="iniciarAudio()">
+                    🎤 Iniciar audio
+                </button>
+
+                <div class="voz-header">
+                    <span>Entrada de voz</span>
+                    <span id="valorVoz">0.00</span>
+                </div>
+
+                <div id="vumetro">
+                    <div id="umbral"></div>
+                    <div id="barraVoz"></div>
+                </div>
+            </div>
+
+            <div class="bloque">
+                <div class="titulo-bloque">Elegí la paleta cromática</div>
+
+                <div class="muestras-paleta">
+                    <button class="muestra marron" title="Marrones"
+                        onclick="paleta = 0; actualizarIndicadorPaleta();"></button>
+                    <button class="muestra amarillo" title="Amarillo / Óxido"
+                        onclick="paleta = 1; actualizarIndicadorPaleta();"></button>
+                    <button class="muestra verde" title="Verdes"
+                        onclick="paleta = 2; actualizarIndicadorPaleta();"></button>
+                    <button class="muestra cobalto" title="Cobalto"
+                        onclick="paleta = 3; actualizarIndicadorPaleta();"></button>
+                </div>
+
+                <div id="paletaActiva">
+                    Paleta activa: Marrones
+                </div>
+
+                <p class="ayuda-mini">
+                    Sonido corto: cambiar paleta. Sonido sostenido: comenzar.
+                </p>
+            </div>
+
+            <div class="bloque" id="panelFranjas">
+                <div class="voz-header">
+                    <span id="textoFranjas">Franjas: 0</span>
+                </div>
+
+                <div id="barraFranjasContenedor">
+                    <div id="barraFranjas"></div>
+                </div>
+
+                <div id="ayudaFranjas">
+                    Voz o mouse: elegir cantidad. Silencio o soltar: confirmar.
+                </div>
+            </div>
+
+            <div class="bloque ayuda-teclado">
+                <div class="titulo-bloque">Respaldo manual</div>
+                <p><strong>Q/W/E/R</strong> cambiar paleta</p>
+                <p><strong>Mouse</strong> pintar</p>
+                <p><strong>ENTER</strong> avanzar estado</p>
+                <p><strong>S</strong> guardar obra cerrada</p>
+                <p><strong>0</strong> reiniciar</p>
+            </div>
+        </aside>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+    <script src="libraries/ml5.min.js"></script>
+
+    <script src="fondo.js"></script>
+    <script src="fondoamarillo.js"></script>
+    <script src="motas.js"></script>
+
+    <script src="franjasmarrones.js"></script>
+    <script src="franjascobalto.js"></script>
+    <script src="franjasverdes.js"></script>
+    <script src="franjasamarillas.js"></script>
+    <script src="gestor.js"></script>
+    <script src="voz.js"></script>
+
+    <script src="limpiar.js"></script>
+    <script src="motasMouse.js"></script>
+    <script src="pincelFondo.js"></script>
+    <script src="veladuras.js"></script>
+    <script src="pincelMouse.js"></script>
+    <script src="franjasControl.js"></script>
+    <script src="sketch.js"></script>
 </body>
 
 </html>
